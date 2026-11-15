@@ -1,0 +1,22 @@
+# Gradle / Android build output
+.gradle/
+build/
+local.properties
+.cxx/
+.externalNativeBuild/
+
+# IDE
+.idea/
+*.iml
+.DS_Store
+
+# Signing material
+*.jks
+*.keystore
+keystore
+
+# Python
+__pycache__/
+
+# Raw (unsanitized) screen dumps can contain private on-screen text
+dumps/
