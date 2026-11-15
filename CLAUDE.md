@@ -1,0 +1,78 @@
+# Focus Guard
+
+Personal Android app that makes YouTube and Instagram less of a time sink. An accessibility service watches those two apps and leaves a blocked screen as soon as it opens. It does not modify the apps and needs no root, VPN, or certificate.
+
+The folder is still named `focus-proxy` for historical reasons (see "History").
+
+## What is blocked
+
+| Rule key | Screen | Detection | Reaction |
+|---|---|---|---|
+| `youtube_shorts` | YouTube Shorts player | view id `reel_progress_bar` or `reel_recycler` visible | system Back |
+| `instagram_reels_tab` | Instagram Reels tab | view id `clips_tab` selected | tap `feed_tab`, else Back |
+
+Instagram Explore is deliberately not blocked for now (owner's decision). Reels opened from a DM, the feed, or Explore are deliberately allowed.
+
+**Status: the view ids above are unverified candidates.** They come from other open-source blockers and old app versions. The fixtures in `app/src/test/resources/screens/` are hand-written placeholders (marked `source="synthetic"`). Nothing has been tested on the owner's phone yet. The next task is the discovery procedure below.
+
+## Layout
+
+- `app/src/main/kotlin/com/focusguard/app/`
+  - `Rules.kt`: the whole policy. The file to edit when detection breaks.
+  - `Matcher.kt`: pure Kotlin, no Android imports. `Screen` interface plus rule evaluation.
+  - `BlockerService.kt`: the `AccessibilityService`. Looks views up with `findAccessibilityNodeInfosByViewId`, applies a 1.5 s cooldown per rule, logs with tag `FocusGuard`.
+  - `MainActivity.kt`: service status, link to Accessibility settings, one switch per rule (SharedPreferences `rules`).
+- `app/src/debug/.../DebugHooks.kt`: debug builds only. On broadcast `com.focusguard.app.DUMP` it writes the active window's view tree to `files/dump.xml`. `app/src/release/` has a no-op twin.
+- `app/src/main/res/xml/blocker_service.xml`: service config, including the watched `packageNames`.
+- `app/src/test/`: `MatcherTest` runs `Rules.all` against the screen dumps; `DumpScreen` parses them.
+- `tools/dump_screen.py`: pulls a dump over adb into the fixtures folder. `tools/test_dump_screen.py` tests it.
+- `scripts/install.ps1`: build and `adb install`.
+
+## Commands
+
+```powershell
+.\gradlew.bat --console=plain -q :app:testDebugUnitTest   # matcher tests against the dumps
+python -m unittest discover -s tools -v                    # dump tool tests
+.\gradlew.bat --console=plain -q :app:assembleDebug        # app\build\outputs\apk\debug\app-debug.apk
+.\scripts\install.ps1                                      # build + install on the connected device
+python tools\dump_screen.py <name> [--all-ids]             # save the open screen as a fixture
+adb logcat -s FocusGuard                                   # what the service saw and did
+```
+
+Gradle prints nothing on success with `-q`; check `app/build/test-results/` if you need the test count.
+
+## Discovery: fixing or adding a rule
+
+Do this when a rule stops firing after an app update, and once now to replace the placeholders.
+
+1. Install the debug build and switch Focus Guard on in Accessibility settings.
+2. Open the target screen on the phone and run `python tools\dump_screen.py <name>`. Use the existing fixture names (`youtube_shorts`, `youtube_home`, `youtube_video`, `instagram_feed`, `instagram_explore`, `instagram_reels_tab`, `instagram_dm`, `instagram_dm_reel`) so the tests pick the dump up.
+3. Read the printed "selected ids" and "ids worth a look"; compare the blocked screen's dump against its neighbours to find an id that appears only on the blocked screen.
+4. Update `Rules.kt`, run the unit tests, reinstall, and confirm with `adb logcat -s FocusGuard`.
+
+A rule for a new app also needs its package in `blocker_service.xml` and in the manifest's `<queries>`.
+
+## Things that are easy to get wrong
+
+- Matching is by exact id entry name (the part after `:id/`), and the id's package must equal the app package. A view that is present but not visible does not count.
+- `Signal(mustBeSelected = true)` is what separates "the Reels tab is open" from "the tab bar is on screen".
+- Dumps contain ids, classes, state flags, and bounds only. Never add text or content descriptions to them; they would capture private on-screen content. `dump_screen.py` enforces this with an attribute allowlist.
+- `rootInActiveWindow` is null on some system windows (seen on the permission prompt). The dump then logs `dump: no active window` and the tool times out.
+- Use the SDK's adb (`%LOCALAPPDATA%\Android\Sdk\platform-tools\adb.exe`). The `adb` on PATH (`C:\Windows\adb`) is an older version and restarts the adb server when mixed with it. The tool and script already prefer the SDK one.
+- On POCO/HyperOS the system kills the service unless the app has Autostart enabled and battery saver set to "No restrictions".
+- Sideloaded apps can show "Restricted setting" when enabling accessibility: App info → ⋮ → Allow restricted settings.
+
+## Build environment
+
+- AGP 9.1.1 with its built-in Kotlin support (no Kotlin Gradle plugin applied), Gradle 9.3.1 wrapper, JDK 17.
+- compileSdk 37, targetSdk 34, minSdk 26. No third-party runtime dependencies; JUnit 4 for tests. No INTERNET permission.
+- `local.properties` (ignored) holds `sdk.dir`; `ANDROID_HOME` is not set on this machine.
+- Emulator AVD `FocusProxy_API34` (x86_64) exists. Its YouTube is too old to open content and it has no Instagram, so it only proves the service starts and dumps work. On an emulator the service can be enabled with `adb shell settings put secure enabled_accessibility_services com.focusguard.app/com.focusguard.app.BlockerService`.
+
+## History
+
+This repo used to be a PCAPdroid fork with an on-device mitmproxy addon that blocked API endpoints. It was dropped because YouTube and Instagram ignore user-installed CAs, so the proxy could never see a URL path on a stock phone; no endpoint was ever captured.
+
+- Old tree: tag `archive/pcapdroid-proxy`.
+- The addon's two local-only commits: tag `archive/focus-proxy-addon` inside `.git/modules/mitm-addon` (read with `GIT_DIR=.git/modules/mitm-addon GIT_WORK_TREE=. git log archive/focus-proxy-addon`).
+- There is no remote. Nothing here is backed up off this machine.

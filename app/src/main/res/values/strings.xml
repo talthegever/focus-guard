@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Focus Guard</string>
+    <string name="service_description">Leaves YouTube Shorts and the Instagram Reels tab as soon as they open. Reads view ids in those two apps only. It does not read text, and it has no internet access.</string>
+    <string name="status_running">Blocker is running</string>
+    <string name="status_stopped">Blocker is off. Turn on Focus Guard in Accessibility settings.</string>
+    <string name="open_accessibility_settings">Open Accessibility settings</string>
+    <string name="rules_heading">Blocked screens</string>
+</resources>

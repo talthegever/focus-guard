@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SYNTHETIC placeholder written by hand. Replace with a real dump: python tools/dump_screen.py youtube_video -->
+<screen package="com.google.android.youtube" appVersion="synthetic" source="synthetic">
+  <node id="" class="android.widget.FrameLayout" selected="false" visible="true" clickable="false">
+    <node id="com.google.android.youtube:id/watch_player" class="android.widget.FrameLayout" selected="false" visible="true" clickable="false"/>
+    <node id="com.google.android.youtube:id/watch_list" class="androidx.recyclerview.widget.RecyclerView" selected="false" visible="true" clickable="false"/>
+  </node>
+</screen>

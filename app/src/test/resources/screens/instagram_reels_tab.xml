@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SYNTHETIC placeholder written by hand. Replace with a real dump: python tools/dump_screen.py instagram_reels_tab -->
+<screen package="com.instagram.android" appVersion="synthetic" source="synthetic">
+  <node id="" class="android.widget.FrameLayout" selected="false" visible="true" clickable="false">
+    <node id="com.instagram.android:id/clips_viewer_view_pager" class="androidx.viewpager.widget.ViewPager" selected="false" visible="true" clickable="false"/>
+    <node id="com.instagram.android:id/tab_bar" class="android.widget.LinearLayout" selected="false" visible="true" clickable="false">
+      <node id="com.instagram.android:id/feed_tab" class="android.widget.FrameLayout" selected="false" visible="true" clickable="true"/>
+      <node id="com.instagram.android:id/search_tab" class="android.widget.FrameLayout" selected="false" visible="true" clickable="true"/>
+      <node id="com.instagram.android:id/clips_tab" class="android.widget.FrameLayout" selected="true" visible="true" clickable="true"/>
+      <node id="com.instagram.android:id/direct_tab" class="android.widget.FrameLayout" selected="false" visible="true" clickable="true"/>
+      <node id="com.instagram.android:id/profile_tab" class="android.widget.FrameLayout" selected="false" visible="true" clickable="true"/>
+    </node>
+  </node>
+</screen>

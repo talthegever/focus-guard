@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SYNTHETIC placeholder written by hand. Replace with a real dump: python tools/dump_screen.py youtube_home -->
+<screen package="com.google.android.youtube" appVersion="synthetic" source="synthetic">
+  <node id="" class="android.widget.FrameLayout" selected="false" visible="true" clickable="false">
+    <node id="com.google.android.youtube:id/results" class="androidx.recyclerview.widget.RecyclerView" selected="false" visible="true" clickable="false"/>
+    <node id="com.google.android.youtube:id/pivot_bar" class="android.widget.FrameLayout" selected="false" visible="true" clickable="false"/>
+  </node>
+</screen>
