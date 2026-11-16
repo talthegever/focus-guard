@@ -16,11 +16,13 @@ Everything else keeps working, including Instagram Explore and reels that someon
    .\scripts\install.ps1
    ```
 
-3. On the phone: Settings → Accessibility → Downloaded apps → **Focus Guard** → on.
-   - If Android says "Restricted setting": open Focus Guard's App info → ⋮ → **Allow restricted settings**, then try again.
-4. On POCO/HyperOS, also enable **Autostart** for Focus Guard and set its battery saver to **No restrictions**. Otherwise the system stops the service.
+   The script installs the app, switches its accessibility service on, lifts Android's battery limit, and opens the app's setup screen on the phone.
 
-Open the Focus Guard app to see whether the blocker is running and to switch individual rules off.
+3. On the setup screen, finish any step that is not ticked. Each step has a button that opens the right settings page.
+   - On Xiaomi/POCO, the script can only switch the service on if **USB debugging (Security settings)** is enabled in Developer options. If it is not, use the **Turn on** button.
+   - On Xiaomi/POCO, **Autostart** and **Battery saver: No restrictions** always have to be set by hand, once. Without them the system stops the blocker.
+
+Open the Focus Guard app any time to see the setup state and to switch individual rules off.
 
 ## Limits
 

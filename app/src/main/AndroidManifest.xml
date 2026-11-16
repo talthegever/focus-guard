@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- Lets the debug dump read the watched apps' version names. No other permissions. -->
+    <!-- Lets the setup screen show Android's "allow background use" dialog. -->
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+
+    <!-- Lets the debug dump read the watched apps' version names. -->
     <queries>
         <package android:name="com.google.android.youtube" />
         <package android:name="com.instagram.android" />

@@ -1,8 +1,22 @@
 <resources>
     <string name="app_name">Focus Guard</string>
     <string name="service_description">Leaves YouTube Shorts and the Instagram Reels tab as soon as they open. Reads view ids in those two apps only. It does not read text, and it has no internet access.</string>
-    <string name="status_running">Blocker is running</string>
-    <string name="status_stopped">Blocker is off. Turn on Focus Guard in Accessibility settings.</string>
-    <string name="open_accessibility_settings">Open Accessibility settings</string>
+
+    <string name="setup_heading">Setup</string>
+    <string name="step_accessibility">Accessibility access</string>
+    <string name="step_accessibility_hint">Focus Guard needs this to notice when Shorts or Reels open. If Android says \"Restricted setting\", tap \"Allow restricted\", open the ⋮ menu, choose \"Allow restricted settings\", then come back and turn it on.</string>
+    <string name="step_battery">No battery limits</string>
+    <string name="step_battery_hint">Stops Android from shutting the blocker down in the background.</string>
+    <string name="step_autostart">Autostart (Xiaomi / POCO)</string>
+    <string name="step_autostart_hint">Switch Autostart on for Focus Guard so it comes back after a restart. This cannot be checked from here.</string>
+    <string name="step_xiaomi_battery">Battery saver: No restrictions (Xiaomi / POCO)</string>
+    <string name="step_xiaomi_battery_hint">Choose \"No restrictions\" for Focus Guard. This cannot be checked from here.</string>
+
+    <string name="action_turn_on">Turn on</string>
+    <string name="action_allow_restricted">Allow restricted</string>
+    <string name="action_allow">Allow</string>
+    <string name="action_open">Open</string>
+    <string name="settings_page_missing">That settings page is not available on this phone. Find Focus Guard in the Settings app.</string>
+
     <string name="rules_heading">Blocked screens</string>
 </resources>
