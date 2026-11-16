@@ -27,7 +27,7 @@ Open the Focus Guard app any time to see the setup state and to switch individua
 ## Limits
 
 - It reacts after the screen opens, so the blocked screen can flash for a moment.
-- The Shorts shelf on the YouTube home feed stays visible; tapping a Short sends you back.
+- The Shorts shelf on the YouTube home feed counts as Shorts: when it scrolls into view, Focus Guard presses Back.
 - You can turn the service off in Settings. This adds friction; it is not a lock.
 - YouTube and Instagram updates can rename views, which silently disables a rule until it is re-tuned. See "Discovery" in [CLAUDE.md](CLAUDE.md).
 

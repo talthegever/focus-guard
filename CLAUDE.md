@@ -8,12 +8,12 @@ The folder is still named `focus-proxy` for historical reasons (see "History").
 
 | Rule key | Screen | Detection | Reaction |
 |---|---|---|---|
-| `youtube_shorts` | YouTube Shorts player | view id `reel_progress_bar` or `reel_recycler` visible | system Back |
+| `youtube_shorts` | YouTube Shorts player, and the Shorts shelf on the home feed | view id `reel_progress_bar` or `reel_recycler` visible | system Back |
 | `instagram_reels_tab` | Instagram Reels tab | view id `clips_tab` selected | tap `feed_tab`, else Back |
 
 Instagram Explore is deliberately not blocked for now (owner's decision). Reels opened from a DM, the feed, or Explore are deliberately allowed.
 
-**Status: the view ids above are unverified candidates.** They come from other open-source blockers and old app versions. The fixtures in `app/src/test/resources/screens/` are hand-written placeholders (marked `source="synthetic"`). Nothing has been tested on the owner's phone yet. The next task is the discovery procedure below.
+**Status: `youtube_shorts` fires on the owner's phone; everything else is unverified.** On 2026-11-16 (YouTube 21.45.82, POCO `duchamp`) the service left Shorts twice on signal `reel_recycler`. `reel_progress_bar` is checked first and did not match either time, so it is either gone or appears later than the recycler. The Shorts shelf on the home feed triggers the rule too (owner's report, one `reel_recycler` block in the log); the owner wants it that way, so do not narrow the rule to the player. Not yet checked: that normal videos and a home feed without the shelf are left alone. `instagram_reels_tab` is still an untested candidate from other open-source blockers; Instagram is not installed on the phone. The fixtures in `app/src/test/resources/screens/` are still hand-written placeholders (marked `source="synthetic"`). The next task is the discovery procedure below; to dump the Shorts screen, switch the rule off in the app first or the service leaves before the dump.
 
 ## Layout
 
@@ -24,6 +24,7 @@ Instagram Explore is deliberately not blocked for now (owner's decision). Reels 
   - `MainActivity.kt`: setup checklist (each step opens the exact settings page, with fallbacks) and one switch per rule (SharedPreferences `rules`).
 - `app/src/debug/.../DebugHooks.kt`: debug builds only. On broadcast `com.focusguard.app.DUMP` it writes the active window's view tree to `files/dump.xml`. `app/src/release/` has a no-op twin.
 - `app/src/main/res/xml/blocker_service.xml`: service config, including the watched `packageNames`.
+- `app/src/main/res/drawable/ic_launcher_*.xml`: the launcher icon (shield with a struck-through play button), vector only. The monochrome file is a hand-kept copy of the foreground's shapes; change both together.
 - `app/src/test/`: `MatcherTest` runs `Rules.all` against the screen dumps; `DumpScreen` parses them.
 - `tools/dump_screen.py`: pulls a dump over adb into the fixtures folder. `tools/test_dump_screen.py` tests it.
 - `scripts/install.ps1`: build, `adb install`, then one-time setup over adb: appends the service to `enabled_accessibility_services` (keeping other services), adds the app to the Doze allowlist, and opens the setup screen.

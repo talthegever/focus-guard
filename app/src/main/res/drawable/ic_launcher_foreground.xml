@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- A shield holding a struck-through play button. Drawn inside the adaptive icon's
+     66dp safe zone (centre 54,54). ic_launcher_monochrome.xml is the one-colour twin. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M54,28 L75,35.5 V53 C75,66.5 66.5,76.5 54,81 C41.5,76.5 33,66.5 33,53 V35.5 Z" />
+    <path
+        android:fillColor="@color/ic_launcher_background"
+        android:pathData="M47.5,42.5 L67,54 L47.5,65.5 Z"
+        android:strokeColor="@color/ic_launcher_background"
+        android:strokeLineJoin="round"
+        android:strokeWidth="3" />
+    <!-- White under the strike keeps it clear of the play button. -->
+    <path
+        android:pathData="M45,68.5 L63,39.5"
+        android:strokeColor="#FFFFFF"
+        android:strokeLineCap="round"
+        android:strokeWidth="7.5" />
+    <path
+        android:pathData="M45,68.5 L63,39.5"
+        android:strokeColor="#FF5A4F"
+        android:strokeLineCap="round"
+        android:strokeWidth="4" />
+</vector>
