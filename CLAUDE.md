@@ -92,4 +92,4 @@ This repo used to be a PCAPdroid fork with an on-device mitmproxy addon that blo
 - Old tree: tag `archive/pcapdroid-proxy`.
 - The addon's two local-only commits: tag `archive/focus-proxy-addon` inside `.git/modules/mitm-addon` (read with `GIT_DIR=.git/modules/mitm-addon GIT_WORK_TREE=. git log archive/focus-proxy-addon`).
 - On 2026-11-17 `main` was rebuilt to start at the PCAPdroid removal, because the clone is shallow (GitHub rejects pushes of shallow history). The old commits live only in the local tag above and branch `backup/pre-rewrite`; neither can be pushed.
-- The owner is setting up a GitHub remote. Until it exists, nothing here is backed up off this machine.
+- Remote `origin` is the public repo github.com/talthegever/focus-guard. Release `v0.1.0` there carries the APK. The signing key and `keystore.properties` are still only on this machine. `upstream` (PCAPdroid) is a leftover remote and is not used.
