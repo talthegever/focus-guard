@@ -7,7 +7,11 @@ A small Android app that leaves distracting screens as soon as they open:
 
 Everything else keeps working, including Instagram Explore and reels that someone sends you. The original apps are not modified. The app has no internet permission and reads only view ids, never on-screen text.
 
-## Install
+## Install from the APK
+
+No computer needed. The step-by-step guide is [INSTALL.md](INSTALL.md); `scripts\release.ps1` puts a copy next to the APK in `dist\` so the two can be sent together.
+
+## Install from source
 
 1. Enable Developer options and USB debugging on the phone and connect it.
 2. From PowerShell in this folder:
@@ -33,4 +37,4 @@ Open the Focus Guard app any time to see the setup state and to switch individua
 
 ## Development
 
-See [CLAUDE.md](CLAUDE.md) for the layout, commands, and how to fix a rule after an app update.
+`.\scripts\release.ps1` builds the signed APK into `dist\`. See [CLAUDE.md](CLAUDE.md) for the layout, commands, and how to fix a rule after an app update.

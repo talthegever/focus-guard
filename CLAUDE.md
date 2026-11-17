@@ -36,6 +36,7 @@ Instagram Explore is deliberately not blocked for now (owner's decision). Reels 
 python -m unittest discover -s tools -v                    # dump tool tests
 .\gradlew.bat --console=plain -q :app:assembleDebug        # app\build\outputs\apk\debug\app-debug.apk
 .\scripts\install.ps1                                      # build + install + switch the service on over adb
+.\scripts\release.ps1                                      # signed release APK -> dist\focus-guard-<version>.apk
 python tools\dump_screen.py <name> [--all-ids]             # save the open screen as a fixture
 adb logcat -s FocusGuard                                   # what the service saw and did
 ```
@@ -66,6 +67,17 @@ A rule for a new app also needs its package in `blocker_service.xml` and in the 
 - Sideloaded apps can show "Restricted setting" when enabling accessibility by hand: App info → ⋮ → Allow restricted settings. The setup screen has a button for it.
 - The setup screen's button targets have not been seen working yet (only that the screen launches without crashing).
 
+## Releases
+
+The APK for other people is the release build, never the debug one: the debug build exports the dump receiver and is signed with this machine's debug key.
+
+- `scripts\release.ps1` runs the unit tests, builds `:app:assembleRelease`, checks the signature with `apksigner`, and copies the APK and `INSTALL.md` to `dist\` (ignored by git; attach the APK to a release instead of committing it).
+- `INSTALL.md` in the project root is the install guide for people who get the APK. Edit it there; the copy in `dist\` is overwritten on every release build.
+- Signing reads `keystore.properties` in the project root (ignored): `storeFile`, `storePassword`, `keyAlias`, `keyPassword`. The key is `%USERPROFILE%\.android\focus-guard-release.jks`, alias `focusguard`. Neither file is backed up anywhere. If the key or its password is lost, nobody can install a later version over the one they have; they must uninstall first.
+- Bump `versionCode` and `versionName` in `app/build.gradle.kts` before each release that goes out.
+- The release and debug builds share an application id but not a signature, so one cannot be installed over the other: uninstall first. Dumps need the debug build, so switch back with `install.ps1` before discovery.
+- On 2026-11-17 release 0.1.0 was sideloaded on the owner's phone following `INSTALL.md` (debug build uninstalled first) and blocked Shorts. The owner's phone now runs the release build.
+
 ## Build environment
 
 - AGP 9.1.1 with its built-in Kotlin support (no Kotlin Gradle plugin applied), Gradle 9.3.1 wrapper, JDK 17.
@@ -79,4 +91,5 @@ This repo used to be a PCAPdroid fork with an on-device mitmproxy addon that blo
 
 - Old tree: tag `archive/pcapdroid-proxy`.
 - The addon's two local-only commits: tag `archive/focus-proxy-addon` inside `.git/modules/mitm-addon` (read with `GIT_DIR=.git/modules/mitm-addon GIT_WORK_TREE=. git log archive/focus-proxy-addon`).
-- There is no remote. Nothing here is backed up off this machine.
+- On 2026-11-17 `main` was rebuilt to start at the PCAPdroid removal, because the clone is shallow (GitHub rejects pushes of shallow history). The old commits live only in the local tag above and branch `backup/pre-rewrite`; neither can be pushed.
+- The owner is setting up a GitHub remote. Until it exists, nothing here is backed up off this machine.
